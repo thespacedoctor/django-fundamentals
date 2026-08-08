@@ -1,29 +1,16 @@
 # django-fundamentals
 
-A reusable base Django app used as the shared foundation for all of David
-Young's Django web applications. Install it into a project and get, out of
+A reusable base Django app used as a shared/common foundation for other Django apps. Install it into a project and get, out of
 the box:
 
-- A custom `User` model (`AbstractUser` subclass) ready for `AUTH_USER_MODEL`.
-- Auth wired through [django-allauth](https://docs.allauth.org/) +
-  [dj-rest-auth](https://dj-rest-auth.readthedocs.io/) — signup, login,
-  logout, and password reset, both as server-rendered views under
-  `/accounts/` and as DRF endpoints under `/api/auth/`
-  (`/api/auth/registration/`, `/api/auth/login/`, `/api/auth/password/reset/`).
-- Object-level permissions via [django-guardian](https://django-guardian.readthedocs.io/),
-  plus a 4-tier authorization model: Anonymous / Authenticated / Staff /
-  Superuser.
+- A custom `User` model.
+- Authentication wired through [django-allauth](https://docs.allauth.org/) + [dj-rest-auth](https://dj-rest-auth.readthedocs.io/) — signup, login, logout, and password reset, both as server-rendered views under `/accounts/` and as DRF endpoints under `/api/auth/` (`/api/auth/registration/`, `/api/auth/login/`, `/api/auth/password/reset/`).
+- Object-level permissions via [django-guardian](https://django-guardian.readthedocs.io/), plus a 4-tier authorization model: `Anonymous` / `Authenticated` / `Staff` / `Superuser`.
 - DRF `TokenAuthentication` for API clients.
-- A server-rendered frontend baseline: Django templates as the source of
-  truth, [HTMX](https://htmx.org/) for server communication,
-  [Alpine.js](https://alpinejs.dev/) for local UI state, and
-  [Tailwind CSS](https://tailwindcss.com/) for styling.
+- A server-rendered frontend baseline: Django templates as the source of truth, [HTMX](https://htmx.org/) for server communication, [Alpine.js](https://alpinejs.dev/) for local UI state, and [Tailwind CSS](https://tailwindcss.com/) for styling.
 
-New projects are generated from
-[django-fundamentals-cookiecutter](https://github.com/thespacedoctor/django-fundamentals-cookiecutter),
-which pins this package as a dependency. Updates to this package
-(`pip install -U django-fundamentals`) propagate into every project built on
-top of it without needing to re-scaffold anything.
+New projects are generated from [django-fundamentals-cookiecutter](https://github.com/thespacedoctor/django-fundamentals-cookiecutter), which pins this package as a dependency. Updates to this package (`pip install -U django-fundamentals`) propagate into every project built on
+top of.
 
 ## Installation
 
