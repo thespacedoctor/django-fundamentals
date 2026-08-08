@@ -1,6 +1,6 @@
 # Changes
 
-**Unreleased**
+**v0.1.3 - August 8, 2026**
 
 - **FEATURE:** default homepage at `/` (`HomeView`) listing the URLs
   django-fundamentals has already wired up, with a short description of
