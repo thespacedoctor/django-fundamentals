@@ -1,0 +1,35 @@
+{% extends "django_fundamentals/base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<h1 class="mb-2 text-2xl font-semibold">Welcome</h1>
+<p class="mb-6 text-sm text-gray-600">
+    This project is built on
+    <a href="https://github.com/thespacedoctor/django-fundamentals" class="text-blue-600 hover:underline">django-fundamentals</a>.
+    Here are the URLs it has already wired up:
+</p>
+
+<div class="overflow-hidden rounded border border-gray-200">
+    <table class="w-full text-left text-sm">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-4 py-2 font-medium">URL</th>
+                <th class="px-4 py-2 font-medium">Description</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+            {% for url in homepage_urls %}
+            <tr>
+                <td class="whitespace-nowrap px-4 py-2 font-mono text-xs">{{ url.path }}</td>
+                <td class="px-4 py-2 text-gray-600">{{ url.description }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<p class="mt-6 text-sm text-gray-500">
+    Override this page by adding your own
+    <code class="rounded bg-gray-100 px-1">templates/django_fundamentals/home.html</code>,
+    or replace it entirely with your own <code class="rounded bg-gray-100 px-1">path("", ...)</code>.
+</p>
+{% endblock %}

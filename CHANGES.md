@@ -2,6 +2,10 @@
 
 **Unreleased**
 
+- **FEATURE:** default homepage at `/` (`HomeView`) listing the URLs
+  django-fundamentals has already wired up, with a short description of
+  each. Overridable via a `templates/django_fundamentals/home.html`
+  template, or fully replaceable with a project's own `path("", ...)`.
 - **DOCS:** install instructions now suggest creating and activating an
   isolated conda environment (`conda create -n django-fundamentals pip -c
   conda-forge`) before `pip install`.

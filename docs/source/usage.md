@@ -27,6 +27,20 @@ class WidgetViewSet(viewsets.ModelViewSet):
         assign_owner_permissions(self.request.user, widget)
 ```
 
+## Homepage
+
+`django_fundamentals.urls` wires up `path("", HomeView.as_view(), name="django_fundamentals_home")`
+as its first entry — a simple page listing the URLs the package has already
+added (login, signup, password reset, the dj-rest-auth API endpoints, etc.),
+so a freshly generated project doesn't 404 at `/`. Two ways to override it:
+
+- **Template override** — add your own
+  `templates/django_fundamentals/home.html` (see "Overriding templates"
+  below); the built-in `HomeView` still supplies the `homepage_urls` context.
+- **Full replacement** — define your own `path("", ...)` **above**
+  `include("django_fundamentals.urls")` in your project's `urls.py`; Django's
+  resolver matches the first pattern, so your view wins entirely.
+
 ## Overriding templates
 
 `base.html`, `nav.html`, and `footer.html` live under
