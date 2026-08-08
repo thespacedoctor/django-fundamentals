@@ -1,5 +1,26 @@
 # Changes
 
+**v0.1.4 - August 8, 2026**
+
+- **FIXED:** set `LOGIN_REDIRECT_URL = "/"` — Django's own default
+  (`/accounts/profile/`) doesn't exist here and 404'd after every
+  successful login/signup.
+- **FIXED:** stop including `dj_rest_auth.registration.urls` wholesale —
+  it registers `account_confirm_email` and `account_email_verification_sent`
+  as empty placeholder views (by its own comment, "just to allow reverse()
+  call") that shadowed allauth's real, working views of the same name,
+  500ing the server-rendered signup flow's "verification email sent" page.
+  Now wires only the real `RegisterView`/`VerifyEmailView`/
+  `ResendEmailVerificationView` endpoints directly.
+- **FIXED:** the `ACCOUNT_*`/`ANONYMOUS_USER_NAME`/`LOGIN_REDIRECT_URL`/
+  `REST_AUTH` settings are now also imported in the package's own test
+  settings, so the test suite exercises the same configuration a host
+  project does (this is what caught the two bugs above).
+- **DOCS:** quickstart/README examples now show the complete settings
+  import list instead of an abbreviated one, with a note that omitting any
+  of the account/auth settings silently falls back to Django/allauth
+  defaults.
+
 **v0.1.3 - August 8, 2026**
 
 - **FEATURE:** default homepage at `/` (`HomeView`) listing the URLs

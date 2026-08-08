@@ -24,7 +24,10 @@ pip install django-fundamentals
 
 ## Quickstart
 
-In your Django project's `settings.py`:
+In your Django project's `settings.py` (abbreviated — see
+`docs/source/quickstart.md` for the full, copy-pasteable version, including
+the `ACCOUNT_*`/`LOGIN_REDIRECT_URL`/`REST_AUTH` imports that must also be
+present or you'll silently fall back to Django/allauth's own defaults):
 
 ```python
 from django_fundamentals.settings import BASE_INSTALLED_APPS, BASE_MIDDLEWARE, BASE_AUTHENTICATION_BACKENDS, BASE_REST_FRAMEWORK

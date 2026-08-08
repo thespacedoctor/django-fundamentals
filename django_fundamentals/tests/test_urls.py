@@ -40,3 +40,40 @@ def test_homepage_renders_with_known_urls(client):
     assert response.status_code == 200
     assert b"/accounts/login/" in response.content
     assert b"/api/auth/registration/" in response.content
+
+
+def test_login_redirects_to_homepage_not_a_404(client, regularUser):
+    from allauth.account.models import EmailAddress
+
+    EmailAddress.objects.create(
+        user=regularUser, email=regularUser.email, verified=True, primary=True
+    )
+
+    response = client.post(
+        reverse("account_login"),
+        {"login": regularUser.email, "password": "pw12345!"},
+    )
+    assert response.status_code == 302
+    assert response.url == "/"
+
+    followed = client.get(response.url)
+    assert followed.status_code == 200
+
+
+def test_account_email_verification_sent_uses_allauths_own_view(client, regularUser):
+    # dj_rest_auth.registration.urls ALSO REGISTERS THIS NAME AS AN EMPTY
+    # PLACEHOLDER TemplateView; IF THAT ONE EVER SHADOWS allauth's REAL VIEW AGAIN
+    # (e.g. A FUTURE INCLUDE-ORDER CHANGE), THIS 500s INSTEAD OF RENDERING.
+    response = client.post(
+        reverse("account_signup"),
+        {
+            "username": "gina",
+            "email": "gina@example.com",
+            "password1": "SuperSecret123!",
+            "password2": "SuperSecret123!",
+        },
+    )
+    assert response.status_code == 302
+
+    followed = client.get(response.url)
+    assert followed.status_code == 200

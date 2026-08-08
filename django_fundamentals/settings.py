@@ -1,24 +1,13 @@
 """*building blocks a host project merges into its own ``settings.py``*
 
-These are plain lists/dicts, not a Django settings module themselves — a
-host project imports and splices them into its own ``INSTALLED_APPS`` etc.
-so it keeps full control over ordering and can add its own apps around them.
-
-**Usage:**
-
-```python
-from django_fundamentals.settings import (
-    BASE_INSTALLED_APPS, BASE_MIDDLEWARE,
-    BASE_AUTHENTICATION_BACKENDS, BASE_REST_FRAMEWORK,
-)
-
-AUTH_USER_MODEL = "django_fundamentals.User"
-INSTALLED_APPS = [*BASE_INSTALLED_APPS, "myproject.apps.core"]
-MIDDLEWARE = [*BASE_MIDDLEWARE, "myproject.middleware.SomeMiddleware"]
-AUTHENTICATION_BACKENDS = BASE_AUTHENTICATION_BACKENDS
-REST_FRAMEWORK = BASE_REST_FRAMEWORK
-SITE_ID = 1
-```
+The ``BASE_*`` names are plain lists/dicts a host project splices into its
+own ``INSTALLED_APPS`` etc. so it keeps full control over ordering. The
+rest (``ACCOUNT_*``, ``ANONYMOUS_USER_NAME``, ``LOGIN_REDIRECT_URL``,
+``REST_AUTH``) are real Django/allauth/guardian settings values — importing
+them into a settings module's namespace is enough for Django to pick them
+up, no reassignment needed. Leaving any of these out silently falls back to
+Django/allauth's own defaults, so import all of them. See
+``docs/source/quickstart.md`` for the full example.
 """
 
 BASE_INSTALLED_APPS = [
@@ -86,6 +75,11 @@ ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_UNIQUE_EMAIL = True
+
+# DJANGO'S OWN DEFAULT ("/accounts/profile/") DOESN'T EXIST HERE — SEND USERS
+# TO THE django_fundamentals HOMEPAGE AFTER LOGIN/LOGOUT INSTEAD
+LOGIN_REDIRECT_URL = "/"
+ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 
 REST_AUTH = {
     "USE_JWT": False,
