@@ -1,0 +1,23 @@
+{% extends "django_fundamentals/base.html" %}
+{% block title %}Log in{% endblock %}
+{% block content %}
+<h1 class="mb-6 text-2xl font-semibold">Log in</h1>
+<form method="post" action="{% url 'account_login' %}" class="max-w-sm space-y-4">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+    <div>
+        <label class="block text-sm font-medium" for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {{ field.errors }}
+    </div>
+    {% endfor %}
+    {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+    {% endif %}
+    <button type="submit" class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">Log in</button>
+</form>
+<p class="mt-4 text-sm">
+    Don't have an account? <a href="{% url 'account_signup' %}" class="text-blue-600 hover:underline">Sign up</a>
+</p>
+{% endblock %}

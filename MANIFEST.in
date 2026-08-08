@@ -1,0 +1,6 @@
+recursive-exclude * *
+include pyproject.toml
+include LICENSE
+include *.md
+recursive-include django_fundamentals *.py
+recursive-include django_fundamentals/templates *

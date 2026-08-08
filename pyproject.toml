@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=70", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-fundamentals"
+dynamic = ["version"]
+description = "Reusable base Django app: custom user model, auth (allauth + dj-rest-auth), object-level permissions (guardian), and an HTMX + Alpine.js + Tailwind frontend baseline."
+authors = [
+    {name = "David R. Young", email = "davidryoung@me.com"},
+]
+keywords = ['django', 'web', 'boilerplate', 'auth', 'htmx', 'tailwind']
+requires-python = ">=3.12"
+readme = "README.md"
+license = "GPL-3.0-or-later"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: Django",
+    "Framework :: Django :: 5.0",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+]
+dependencies = [
+    "django>=5,<6",
+    "django-allauth>=65",
+    "dj-rest-auth>=7",
+    "djangorestframework>=3.15",
+    "django-guardian>=2.4",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/thespacedoctor/django-fundamentals"
+
+[project.optional-dependencies]
+docs = [
+    "build", "sphinx", "sphinx-autodoc2", "myst-parser", "furo",
+    "sphinx-inline-tabs", "sphinxext-opengraph", "sphinx-autobuild",
+    "linkify-it-py", "sphinxcontrib-mermaid", "sphinx-togglebutton",
+    "sphinx_copybutton", "sphinx_tippy", "sphinx_design",
+    "pygments-csv-lexer",
+]
+tests = ["pytest", "pytest-django", "pytest-cov"]
+dev = ["django-fundamentals[tests, docs]", "build", "twine"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+django_fundamentals = ["templates/**/*"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests", "tests.*"]
+
+[tool.setuptools_scm]
+version_scheme = "guess-next-dev"
+local_scheme = "no-local-version"
+write_to = "django_fundamentals/__version__.py"
+write_to_template = "__version__ = '{version}'\n"
