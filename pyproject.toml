@@ -34,11 +34,8 @@ dependencies = [
 
 [project.optional-dependencies]
 docs = [
-    "build", "sphinx", "sphinx-autodoc2", "myst-parser", "furo",
-    "sphinx-inline-tabs", "sphinxext-opengraph", "sphinx-autobuild",
-    "linkify-it-py", "sphinxcontrib-mermaid", "sphinx-togglebutton",
-    "sphinx_copybutton", "sphinx_tippy", "sphinx_design",
-    "pygments-csv-lexer",
+    "build", "sphinx", "myst-parser", "furo",
+    "sphinx-inline-tabs", "sphinx_copybutton", "sphinx_design",
 ]
 tests = ["pytest", "pytest-django", "pytest-cov"]
 dev = ["django-fundamentals[tests, docs]", "build", "twine"]

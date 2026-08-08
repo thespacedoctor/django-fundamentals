@@ -36,6 +36,9 @@ BASE_INSTALLED_APPS = [
     "rest_framework.authtoken",
     "allauth",
     "allauth.account",
+    # dj_rest_auth.registration UNCONDITIONALLY IMPORTS allauth.socialaccount MODELS,
+    # SO IT MUST BE INSTALLED EVEN IF NO SOCIAL PROVIDERS ARE CONFIGURED
+    "allauth.socialaccount",
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "guardian",
