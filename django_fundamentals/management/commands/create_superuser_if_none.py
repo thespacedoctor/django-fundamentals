@@ -37,7 +37,18 @@ class Command(BaseCommand):
             )
             return
 
-        User.objects.create_superuser(
+        newSuperuser = User.objects.create_superuser(
             username=userName, email=userEmail, password=userPassword
         )
+
+        # PRE-VERIFY THE EMAIL SO THE BOOTSTRAP SUPERUSER CAN LOG IN IMMEDIATELY EVEN
+        # WHEN ACCOUNT_EMAIL_VERIFICATION IS "mandatory" AND NO SMTP IS SET UP YET
+        from allauth.account.models import EmailAddress
+
+        EmailAddress.objects.update_or_create(
+            user=newSuperuser,
+            email=userEmail,
+            defaults={"verified": True, "primary": True},
+        )
+
         self.stdout.write(self.style.SUCCESS(f"Created superuser '{userName}'."))
