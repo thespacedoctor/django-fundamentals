@@ -1,5 +1,11 @@
 # Changes
 
+**Unreleased**
+
+- **DOCS:** install instructions now suggest creating and activating an
+  isolated conda environment (`conda create -n django-fundamentals pip -c
+  conda-forge`) before `pip install`.
+
 **v0.1.2 - August 8, 2026**
 
 - **FIXED:** revert a footer smoke-test artifact left over from verifying

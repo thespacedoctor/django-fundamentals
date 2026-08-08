@@ -14,7 +14,11 @@ top of.
 
 ## Installation
 
+Create and activate an isolated conda environment, then install with pip:
+
 ```bash
+conda create -n django-fundamentals pip -c conda-forge
+conda activate django-fundamentals
 pip install django-fundamentals
 ```
 
@@ -50,6 +54,8 @@ static-file wiring and the 4-tier permission helpers.
 ## Development
 
 ```bash
+conda create -n django-fundamentals pip -c conda-forge
+conda activate django-fundamentals
 pip install -e .[dev]
 pytest
 ```
