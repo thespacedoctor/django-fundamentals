@@ -128,6 +128,27 @@ can be completed locally without SMTP. Both sides are gated on
 `settings.DEBUG`; outside DEBUG it would let anyone verify someone else's
 address. Keep the gate on both.
 
+## Git workflow — strict Gitflow
+
+`main` and `develop` are long-lived. **Never commit to either directly** — a
+`pre-commit` hook rejects commits on `main` outright ("Direct commits to main
+are not allowed"), and `develop` is off-limits by convention.
+
+| Branch | Base | Merges into |
+|---|---|---|
+| `feature/<slug>` | `develop` | `develop` |
+| `release/<version>` | `develop` | `main` **and** `develop` |
+| `hotfix/<slug>` | `main` | `main` **and** `develop` |
+
+Gitflow has no `docs/` or `chore/` branch type — documentation and maintenance
+work is a `feature/*` unless it is a production hotfix.
+
+**Propose the branch name to the user and wait for approval before creating
+it.** Do not auto-name and auto-create.
+
+`main` is the release lineage: a `v*` tag on `main` publishes to PyPI, so it
+only ever receives reviewed merges from `release/*` or `hotfix/*`.
+
 ## Conventions
 
 - **Local variables and function arguments are camelCase** (`targetObject`,
