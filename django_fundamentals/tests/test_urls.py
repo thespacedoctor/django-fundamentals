@@ -15,13 +15,18 @@ def test_account_signup_url_resolves():
 def test_login_page_renders(client):
     response = client.get(reverse("account_login"))
     assert response.status_code == 200
-    assert b"Log in" in response.content
+    # allauth's OWN COPY — WE NO LONGER SHIP A HAND-ROLLED login.html, SO THAT
+    # ITS SOCIAL/PASSKEY/LOGIN-BY-CODE FEATURES KEEP WORKING.
+    assert b"Sign In" in response.content
+    # AND IT MUST COME THROUGH OUR THEMED ELEMENTS, NOT allauth's BARE DEFAULTS.
+    assert b"text-ink" in response.content
 
 
 def test_signup_page_renders(client):
     response = client.get(reverse("account_signup"))
     assert response.status_code == 200
-    assert b"Sign up" in response.content
+    assert b"Sign Up" in response.content
+    assert b"text-ink" in response.content
 
 
 def test_rest_auth_registration_endpoint_exists(client):

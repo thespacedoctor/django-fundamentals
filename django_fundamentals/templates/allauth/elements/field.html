@@ -1,0 +1,51 @@
+{% load allauth %}{% comment %}
+STANDALONE FIELD ELEMENT — USED BY allauth PAGES THAT BUILD INPUTS MANUALLY
+(e.g. the "add email address" form) RATHER THAN PASSING A WHOLE FORM.
+Input/textarea styling comes from the element-level base styles registered in
+the Tailwind preset, so only layout and labels are handled here.
+{% endcomment %}
+<div class="space-y-1.5">
+    {% if attrs.errors %}
+        <div class="text-xs text-danger" role="alert">{{ attrs.errors }}</div>
+    {% endif %}
+
+    {% if attrs.type == "textarea" %}
+        <label for="{{ attrs.id }}" class="block text-sm font-medium text-ink">{% slot label %}{% endslot %}</label>
+        <textarea {% if attrs.required %}required{% endif %}
+                  {% if attrs.rows %}rows="{{ attrs.rows }}"{% endif %}
+                  {% if attrs.disabled %}disabled{% endif %}
+                  {% if attrs.readonly %}readonly{% endif %}
+                  {% if attrs.name %}name="{{ attrs.name }}"{% endif %}
+                  {% if attrs.id %}id="{{ attrs.id }}"{% endif %}
+                  {% if attrs.placeholder %}placeholder="{{ attrs.placeholder }}"{% endif %}>{% slot value %}{% endslot %}</textarea>
+
+    {% elif attrs.type == "checkbox" or attrs.type == "radio" %}
+        <div class="flex items-center gap-2">
+            <input type="{{ attrs.type }}"
+                   {% if attrs.required %}required{% endif %}
+                   {% if attrs.disabled %}disabled{% endif %}
+                   {% if attrs.readonly %}readonly{% endif %}
+                   {% if attrs.checked %}checked{% endif %}
+                   {% if attrs.name %}name="{{ attrs.name }}"{% endif %}
+                   {% if attrs.id %}id="{{ attrs.id }}"{% endif %}
+                   {% if attrs.value is not None %}value="{{ attrs.value }}"{% endif %}>
+            <label for="{{ attrs.id }}" class="text-sm text-ink">{% slot label %}{% endslot %}</label>
+        </div>
+
+    {% else %}
+        <label for="{{ attrs.id }}" class="block text-sm font-medium text-ink">{% slot label %}{% endslot %}</label>
+        <input type="{{ attrs.type }}"
+               {% if attrs.required %}required{% endif %}
+               {% if attrs.disabled %}disabled{% endif %}
+               {% if attrs.readonly %}readonly{% endif %}
+               {% if attrs.name %}name="{{ attrs.name }}"{% endif %}
+               {% if attrs.id %}id="{{ attrs.id }}"{% endif %}
+               {% if attrs.placeholder %}placeholder="{{ attrs.placeholder }}"{% endif %}
+               {% if attrs.autocomplete %}autocomplete="{{ attrs.autocomplete }}"{% endif %}
+               {% if attrs.value is not None %}value="{{ attrs.value }}"{% endif %}>
+    {% endif %}
+
+    {% if slots.help_text %}
+        <p class="text-xs text-muted">{% slot help_text %}{% endslot %}</p>
+    {% endif %}
+</div>

@@ -47,7 +47,7 @@ dev = ["django-fundamentals[tests, docs]", "build", "twine"]
 include-package-data = true
 
 [tool.setuptools.package-data]
-django_fundamentals = ["templates/**/*"]
+django_fundamentals = ["templates/**/*", "static/**/*"]
 
 [tool.setuptools.packages.find]
 where = ["."]

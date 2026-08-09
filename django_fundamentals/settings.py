@@ -65,6 +65,8 @@ BASE_TEMPLATE_CONTEXT_PROCESSORS = [
     "django.template.context_processors.request",
     "django.contrib.auth.context_processors.auth",
     "django.contrib.messages.context_processors.messages",
+    # SUPPLIES df_site_name / df_sidebar_nav / df_version TO THE UI SKELETON
+    "django_fundamentals.context_processors.design",
 ]
 
 # GUARDIAN NEEDS AN ANONYMOUS USER NAME FOR OBJECT-LEVEL PERMISSION CHECKS
@@ -76,6 +78,11 @@ ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_UNIQUE_EMAIL = True
 
+# ADDS A DEBUG-ONLY CONVENIENCE: STASHES THE EMAIL-CONFIRMATION LINK SO THE
+# "verification sent" PAGE CAN DISPLAY IT WHEN NO SMTP SERVER IS CONFIGURED.
+# INERT OUTSIDE DEBUG — SEE django_fundamentals/adapters.py
+ACCOUNT_ADAPTER = "django_fundamentals.adapters.AccountAdapter"
+
 # DJANGO'S OWN DEFAULT ("/accounts/profile/") DOESN'T EXIST HERE — SEND USERS
 # TO THE django_fundamentals HOMEPAGE AFTER LOGIN/LOGOUT INSTEAD
 LOGIN_REDIRECT_URL = "/"
@@ -85,3 +92,14 @@ REST_AUTH = {
     "USE_JWT": False,
     "SESSION_LOGIN": True,
 }
+
+# --- UI SKELETON -----------------------------------------------------------
+# THESE ARE READ BY django_fundamentals.context_processors.design VIA
+# getattr(settings, ...), SO A HOST PROJECT OVERRIDES THEM SIMPLY BY DEFINING
+# ITS OWN VALUE IN settings.py — THERE IS NOTHING TO IMPORT FOR THESE TWO.
+#
+#   DJANGO_FUNDAMENTALS_SITE_NAME    -- shown in <title>, brand mark, footer
+#   DJANGO_FUNDAMENTALS_SIDEBAR_NAV  -- list of {label, url_name, icon} dicts,
+#                                       or {section: "..."} for a group heading.
+#                                       Defaults to DEFAULT_SIDEBAR_NAV in
+#                                       django_fundamentals/context_processors.py

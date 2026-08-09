@@ -1,0 +1,12 @@
+{% load allauth %}
+<form method="{{ attrs.method|default:'post' }}"
+      {% if attrs.action %}action="{{ attrs.action }}"{% endif %}
+      {% if attrs.id %}id="{{ attrs.id }}"{% endif %}
+      class="mt-6 space-y-4">
+    {% slot body %}{% endslot %}
+    {% if slots.actions %}
+        <div class="pt-2">
+            {% slot actions %}{% endslot %}
+        </div>
+    {% endif %}
+</form>

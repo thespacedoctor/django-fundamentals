@@ -4,3 +4,7 @@ include LICENSE
 include *.md
 recursive-include django_fundamentals *.py
 recursive-include django_fundamentals/templates *
+# NOTE: THE `recursive-exclude * *` ABOVE DROPS EVERYTHING NOT EXPLICITLY
+# RE-INCLUDED, SO static/ (FAVICONS, TAILWIND PRESET, REFERENCE TOKENS) MUST BE
+# LISTED HERE OR IT SILENTLY VANISHES FROM THE SDIST.
+recursive-include django_fundamentals/static *

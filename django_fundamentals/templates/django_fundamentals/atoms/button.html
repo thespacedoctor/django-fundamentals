@@ -1,0 +1,26 @@
+{% load django_fundamentals %}{% comment %}
+BUTTON ATOM.
+
+USAGE:
+    {% include "django_fundamentals/atoms/button.html" with label="Save" %}
+    {% include "django_fundamentals/atoms/button.html" with label="Cancel" variant="secondary" href=cancel_url %}
+    {% include "django_fundamentals/atoms/button.html" with label="Delete" variant="danger" %}
+
+PARAMETERS:
+    label    -- button text (required)
+    variant  -- primary (default) | secondary | ghost | danger
+    type     -- submit (default) | button | reset   [ignored when href given]
+    href     -- render an <a> styled as a button instead of a <button>
+    full     -- True to stretch to the container width
+    name     -- optional form field name
+    value    -- optional form field value
+{% endcomment %}{% button_classes variant=variant full=full as classes %}{% spaceless %}
+{% if href %}
+    <a href="{{ href }}" class="{{ classes }}">{{ label }}</a>
+{% else %}
+    <button type="{{ type|default:'submit' }}"
+            class="{{ classes }}"
+            {% if name %}name="{{ name }}"{% endif %}
+            {% if value %}value="{{ value }}"{% endif %}>{{ label }}</button>
+{% endif %}
+{% endspaceless %}

@@ -1,0 +1,29 @@
+{% load allauth django_fundamentals %}{% comment %} djlint:off {% endcomment %}
+{% comment %}
+allauth PASSES SEMANTIC HINTS IN attrs.tags (A LIST, SPLIT ON COMMAS BY THE
+{% element %} TAG). MAP THEM ONTO OUR BUTTON VARIANTS:
+
+    danger / delete      -> danger
+    outline / secondary  -> secondary
+    link                 -> ghost
+    anything else        -> primary
+
+`prominent` MEANS FULL-WIDTH IN allauth'S OWN THEME, SO HONOUR THAT TOO.
+{% endcomment %}
+{% if "danger" in attrs.tags or "delete" in attrs.tags %}
+    {% button_classes variant="danger" as classes %}
+{% elif "outline" in attrs.tags or "secondary" in attrs.tags %}
+    {% button_classes variant="secondary" as classes %}
+{% elif "link" in attrs.tags %}
+    {% button_classes variant="ghost" as classes %}
+{% else %}
+    {% button_classes variant="primary" as classes %}
+{% endif %}
+<{% if attrs.href %}a href="{{ attrs.href }}"{% else %}button{% endif %}
+class="{{ classes }}{% if 'prominent' in attrs.tags %} w-full{% endif %}"
+{% if attrs.form %}form="{{ attrs.form }}"{% endif %}
+{% if attrs.id %}id="{{ attrs.id }}"{% endif %}
+{% if attrs.name %}name="{{ attrs.name }}"{% endif %}
+{% if attrs.value %}value="{{ attrs.value }}"{% endif %}
+{% if attrs.type %}type="{{ attrs.type }}"{% endif %}
+>{% slot %}{% endslot %}</{% if attrs.href %}a{% else %}button{% endif %}>

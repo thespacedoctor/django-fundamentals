@@ -1,0 +1,13 @@
+{% comment %}
+FOOTER ORGANISM.
+{% endcomment %}
+<footer class="border-t border-line px-4 py-6 sm:px-6 lg:px-8">
+    <div class="mx-auto flex max-w-shell flex-col items-center justify-between gap-2 text-xs text-muted sm:flex-row">
+        <p>&copy; {% now "Y" %} {{ df_site_name|default:"Django Fundamentals" }}</p>
+        <p>
+            Built on
+            <a href="https://github.com/thespacedoctor/django-fundamentals"
+               class="rounded text-brand hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-brand">django-fundamentals</a>
+        </p>
+    </div>
+</footer>

@@ -1,5 +1,36 @@
 # Changes
 
+**v0.2.0 - August 9, 2026**
+
+- **FEATURE:** full UI skeleton built from atomic-design components — app shell
+  (sidebar + top navbar + footer), a separate centered layout for auth pages,
+  styled 404/403/400/500 status pages, and a favicon set (SVG, ICO,
+  apple-touch-icon, web manifest).
+- **FEATURE:** design-token system. All colours and core dimensions are CSS
+  custom properties in the host project's `static/src/tokens.css` — one file to
+  re-skin the whole app. A Tailwind preset shipped in the package maps semantic
+  utilities (`bg-brand`, `w-sidebar`, `text-ink`) onto them, so the mapping
+  keeps updating via pip while the values stay project-owned.
+- **FEATURE:** dark mode — class-based, Alpine toggle, `localStorage`-persisted,
+  defaulting to `prefers-color-scheme`, with a synchronous boot script that
+  avoids a flash of the wrong theme.
+- **FEATURE:** data-driven sidebar via `DJANGO_FUNDAMENTALS_SIDEBAR_NAV` and
+  `DJANGO_FUNDAMENTALS_SITE_NAME`, surfaced by a new
+  `django_fundamentals.context_processors.design`.
+- **REFACTOR:** allauth is now themed through its own extension points — its
+  three layouts plus its element templates — instead of per-page overrides. All
+  ~30 allauth pages are styled, including MFA/social/session flows, and allauth
+  keeps its own features (social login, passkeys, login-by-code). The four
+  hand-rolled `account/*.html` templates were removed as a result.
+- **FIXED:** signup's "verify your email" page was unstyled — it was one of the
+  many allauth templates falling through to allauth's bare layout.
+- **ENHANCEMENT:** while `DEBUG` is on, the "verify your email" page shows the
+  confirmation link directly, so signup can be completed without SMTP or
+  digging through console output. Strictly gated on `DEBUG`.
+- **DOCS:** new `ui.md` (tokens, layouts, components) and `email.md` (console
+  backend in dev; Gmail SMTP with App Passwords, limits and caveats for
+  production).
+
 **v0.1.4 - August 8, 2026**
 
 - **FIXED:** set `LOGIN_REDIRECT_URL = "/"` — Django's own default

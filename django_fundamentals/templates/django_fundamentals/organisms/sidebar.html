@@ -1,0 +1,43 @@
+{% comment %}
+SIDEBAR ORGANISM — FIXED ON DESKTOP, OFF-CANVAS DRAWER ON MOBILE.
+
+Nav entries come from the DJANGO_FUNDAMENTALS_SIDEBAR_NAV setting via
+django_fundamentals.context_processors.design, so a project adds links in
+settings.py without overriding this template. Sections are optional: an entry
+with a `section` key starts a new labelled group.
+
+Expects a parent Alpine scope providing `sidebarOpen` (see layouts/app.html).
+{% endcomment %}
+<aside x-cloak
+       :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
+       class="fixed inset-y-0 left-0 z-sidebar flex w-sidebar transform flex-col border-r border-line bg-raised transition-transform duration-200 ease-out lg:top-navbar lg:translate-x-0"
+       aria-label="Sidebar navigation">
+
+    {# DRAWER HEADER — MOBILE ONLY; ON DESKTOP THE NAVBAR ALREADY SHOWS THE BRAND #}
+    <div class="flex h-navbar items-center justify-between border-b border-line px-4 lg:hidden">
+        {% include "django_fundamentals/molecules/brand_mark.html" %}
+        <button type="button" @click="sidebarOpen = false"
+                class="inline-flex h-9 w-9 items-center justify-center rounded text-muted hover:bg-sunken hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                aria-label="Close navigation">
+            {% include "django_fundamentals/atoms/icon.html" with name="close" class="h-6 w-6" %}
+        </button>
+    </div>
+
+    <nav class="flex-1 space-y-1 overflow-y-auto p-3">
+        {% for item in df_sidebar_nav %}
+            {% if item.section %}
+                <p class="px-3 pb-1 pt-4 text-xs font-semibold uppercase tracking-wider text-muted first:pt-1">
+                    {{ item.section }}
+                </p>
+            {% else %}
+                {% include "django_fundamentals/molecules/nav_item.html" with item=item %}
+            {% endif %}
+        {% endfor %}
+    </nav>
+
+    {% block sidebar_footer %}
+    <div class="border-t border-line p-3">
+        <p class="px-3 text-xs text-muted">v{{ df_version }}</p>
+    </div>
+    {% endblock %}
+</aside>

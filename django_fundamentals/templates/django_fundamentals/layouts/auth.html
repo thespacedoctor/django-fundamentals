@@ -1,0 +1,42 @@
+{% extends "django_fundamentals/layouts/base.html" %}
+
+{# CENTERED, SIDEBAR-FREE LAYOUT FOR LOGIN / SIGNUP / PASSWORD RESET / ERRORS. #}
+{# A USER WHO ISN'T SIGNED IN YET HAS NOTHING TO NAVIGATE TO, SO THE APP SHELL #}
+{# WOULD BE DEAD SPACE HERE.                                                   #}
+
+{% block body %}
+<div class="flex min-h-screen flex-col">
+
+    {# MINIMAL HEADER — BRAND + THEME TOGGLE ONLY #}
+    <header class="flex h-navbar items-center justify-between px-4 sm:px-6">
+        {% include "django_fundamentals/molecules/brand_mark.html" %}
+        {% include "django_fundamentals/molecules/theme_toggle.html" %}
+    </header>
+
+    <main id="main-content" class="flex flex-1 items-center justify-center px-4 py-8 sm:px-6">
+        <div class="w-full max-w-md">
+            {% include "django_fundamentals/organisms/messages.html" %}
+
+            <div class="rounded-lg border border-line bg-raised p-6 shadow-sm sm:p-8">
+                {% block auth_header %}
+                    {% if page_title %}
+                        <h1 class="text-xl font-semibold tracking-tight text-ink">{{ page_title }}</h1>
+                        {% if page_subtitle %}
+                            <p class="mt-1 text-sm text-muted">{{ page_subtitle }}</p>
+                        {% endif %}
+                        <div class="mt-6"></div>
+                    {% endif %}
+                {% endblock %}
+
+                {% block content %}{% endblock %}
+            </div>
+
+            {% block auth_aside %}{% endblock %}
+        </div>
+    </main>
+
+    {% block footer %}
+        {% include "django_fundamentals/organisms/footer.html" %}
+    {% endblock %}
+</div>
+{% endblock %}

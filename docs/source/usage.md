@@ -43,16 +43,18 @@ so a freshly generated project doesn't 404 at `/`. Two ways to override it:
 
 ## Overriding templates
 
-`base.html`, `nav.html`, and `footer.html` live under
+The UI skeleton's layouts and components live under
 `django_fundamentals/templates/django_fundamentals/`. A host project can
 override any of them by placing a same-named file at the equivalent path in
 its own `templates/` directory, as long as that directory is listed before
 `django_fundamentals` in `INSTALLED_APPS`/`DIRS`.
 
-allauth's own templates (`account/login.html`, `account/signup.html`, etc.)
-are overridden directly at `django_fundamentals/templates/account/` — this
-package is listed **before** `allauth.account` in `BASE_INSTALLED_APPS` so
-these overrides take precedence.
+allauth is themed through its own extension points — its three layouts and its
+element templates, overridden at
+`django_fundamentals/templates/allauth/`. This package is listed **before**
+`allauth.account` in `BASE_INSTALLED_APPS` so those overrides take precedence.
+
+See [UI skeleton](ui.md) for the full component list and the design tokens.
 
 ## Management commands
 

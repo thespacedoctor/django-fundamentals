@@ -8,5 +8,7 @@ and an HTMX + Alpine.js + Tailwind CSS frontend baseline.
 :maxdepth: 2
 
 quickstart
+ui
+email
 usage
 ```

@@ -1,0 +1,22 @@
+{% comment %}
+MESSAGES ORGANISM — RENDERS django.contrib.messages.
+
+Maps Django's message tags onto the alert atom's levels. Django emits
+"error" for both ERROR and the DEBUG level alias, and "warning"/"success"/"info"
+otherwise.
+{% endcomment %}
+{% if messages %}
+    <div class="space-y-2" role="region" aria-label="Notifications">
+        {% for message in messages %}
+            {% if "error" in message.tags %}
+                {% include "django_fundamentals/atoms/alert.html" with level="error" body=message %}
+            {% elif "warning" in message.tags %}
+                {% include "django_fundamentals/atoms/alert.html" with level="warning" body=message %}
+            {% elif "success" in message.tags %}
+                {% include "django_fundamentals/atoms/alert.html" with level="success" body=message %}
+            {% else %}
+                {% include "django_fundamentals/atoms/alert.html" with level="info" body=message %}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}

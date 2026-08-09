@@ -1,0 +1,13 @@
+{% comment %}
+BRAND MARK MOLECULE — LOGO + SITE NAME, LINKED HOME.
+
+The mark itself is the token brand colour, so it re-themes with the palette.
+Override this template to drop in a real logo.
+{% endcomment %}
+<a href="/" class="inline-flex items-center gap-2.5 rounded font-semibold tracking-tight text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brand">
+    <svg viewBox="0 0 32 32" class="h-7 w-7 text-brand" fill="none" aria-hidden="true">
+        <path d="M4 24 12 10l5 8.5L20.5 13 28 24H4Z" fill="currentColor" fill-opacity="0.9"/>
+        <path d="M17 18.5 20.5 13 28 24h-7.2L17 18.5Z" fill="currentColor" fill-opacity="0.55"/>
+    </svg>
+    <span>{{ df_site_name|default:"Django Fundamentals" }}</span>
+</a>

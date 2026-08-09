@@ -1,0 +1,21 @@
+{% comment %}
+allauth's DEFAULT RENDERS {{ attrs.form.as_p }}, WHICH GIVES UNSTYLED LABELS AND
+A DJANGO-DEFAULT ERROR LIST. LOOP INSTEAD SO EVERY allauth FORM PICKS UP THE
+SAME form_field MOLECULE AS OUR OWN TEMPLATES.
+
+Labels are rendered even when allauth passes `unlabeled=True` (it relies on
+placeholders alone in that mode, which is worse for screen readers).
+{% endcomment %}
+<div class="space-y-4">
+    {% if attrs.form.non_field_errors %}
+        {% for error in attrs.form.non_field_errors %}
+            {% include "django_fundamentals/atoms/alert.html" with level="error" body=error %}
+        {% endfor %}
+    {% endif %}
+
+    {% for field in attrs.form.hidden_fields %}{{ field }}{% endfor %}
+
+    {% for field in attrs.form.visible_fields %}
+        {% include "django_fundamentals/molecules/form_field.html" with field=field %}
+    {% endfor %}
+</div>

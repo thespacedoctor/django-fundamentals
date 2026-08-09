@@ -1,0 +1,19 @@
+{% comment %}
+THEME TOGGLE MOLECULE — LIGHT/DARK SWITCH.
+
+Reads the class already set on <html> by the boot script in layouts/base.html,
+so the button starts in the correct state with no flash. Writes the choice to
+localStorage under "theme".
+{% endcomment %}
+<button type="button"
+        x-data="{ dark: document.documentElement.classList.contains('dark') }"
+        @click="dark = !dark;
+                document.documentElement.classList.toggle('dark', dark);
+                localStorage.setItem('theme', dark ? 'dark' : 'light')"
+        class="inline-flex h-9 w-9 items-center justify-center rounded text-muted transition-colors hover:bg-sunken hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        :aria-label="dark ? 'Switch to light theme' : 'Switch to dark theme'"
+        :aria-pressed="dark ? 'true' : 'false'"
+        title="Toggle theme">
+    <span x-show="!dark" x-cloak>{% include "django_fundamentals/atoms/icon.html" with name="moon" %}</span>
+    <span x-show="dark" x-cloak>{% include "django_fundamentals/atoms/icon.html" with name="sun" %}</span>
+</button>

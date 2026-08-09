@@ -1,0 +1,6 @@
+{% extends "django_fundamentals/layouts/auth.html" %}
+{% comment %}
+FALLBACK FOR ANY allauth TEMPLATE THAT EXTENDS THE BASE LAYOUT DIRECTLY RATHER
+THAN entrance/manage. Uses the centered auth card, which is the safer default
+for a page whose audience we can't infer.
+{% endcomment %}

@@ -1,0 +1,10 @@
+{% comment %}
+PAGE HEADER ORGANISM — TITLE + OPTIONAL SUBTITLE, RENDERED WHEN A VIEW SUPPLIES
+`page_title` IN ITS CONTEXT.
+{% endcomment %}
+<div class="mb-6 border-b border-line pb-4">
+    <h1 class="text-2xl font-semibold tracking-tight text-ink">{{ page_title }}</h1>
+    {% if page_subtitle %}
+        <p class="mt-1 text-sm text-muted">{{ page_subtitle }}</p>
+    {% endif %}
+</div>

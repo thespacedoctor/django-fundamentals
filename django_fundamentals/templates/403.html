@@ -1,0 +1,18 @@
+{% extends "django_fundamentals/layouts/auth.html" %}
+{% comment %}
+STATUS PAGE — DJANGO LOOKS FOR 403.html AT THE TEMPLATE ROOT (NOT NAMESPACED).
+Safe to extend a layout: unlike 500, these render with a normal request context.
+{% endcomment %}
+
+{% block head_title %}Access denied &middot; {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <p class="font-mono text-5xl font-semibold tracking-tight text-brand">403</p>
+    <h1 class="mt-4 text-xl font-semibold tracking-tight text-ink">Access denied</h1>
+    <p class="mt-2 text-sm leading-relaxed text-muted">You don't have permission to view this page. If you think this is a mistake, contact an administrator.</p>
+    <div class="mt-6 flex justify-center">
+        {% include "django_fundamentals/atoms/button.html" with label="Back to home" href="/" variant="secondary" %}
+    </div>
+</div>
+{% endblock %}

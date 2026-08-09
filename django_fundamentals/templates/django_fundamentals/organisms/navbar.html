@@ -1,0 +1,24 @@
+{% comment %}
+NAVBAR ORGANISM — STICKY TOP BAR.
+
+Expects a parent Alpine scope providing `sidebarOpen` (see layouts/app.html).
+{% endcomment %}
+<header class="sticky top-0 z-navbar flex h-navbar items-center gap-3 border-b border-line bg-raised/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-raised/80 sm:px-6">
+
+    {# MOBILE SIDEBAR TRIGGER #}
+    <button type="button" @click="sidebarOpen = true"
+            class="inline-flex h-9 w-9 items-center justify-center rounded text-muted transition-colors hover:bg-sunken hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brand lg:hidden"
+            aria-label="Open navigation">
+        {% include "django_fundamentals/atoms/icon.html" with name="menu" class="h-6 w-6" %}
+    </button>
+
+    <div class="lg:w-sidebar lg:shrink-0 lg:pr-4">
+        {% include "django_fundamentals/molecules/brand_mark.html" %}
+    </div>
+
+    <div class="flex flex-1 items-center justify-end gap-1">
+        {% block navbar_actions %}{% endblock %}
+        {% include "django_fundamentals/molecules/theme_toggle.html" %}
+        {% include "django_fundamentals/molecules/user_menu.html" %}
+    </div>
+</header>

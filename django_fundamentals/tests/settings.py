@@ -1,6 +1,7 @@
 """*minimal Django settings used only to run this package's own test suite*"""
 
 from django_fundamentals.settings import (
+    ACCOUNT_ADAPTER,
     ACCOUNT_EMAIL_VERIFICATION,
     ACCOUNT_LOGIN_METHODS,
     ACCOUNT_LOGOUT_REDIRECT_URL,

@@ -1,0 +1,49 @@
+{% extends "account/base_entrance.html" %}
+{% load i18n allauth %}
+
+{% comment %}
+THE ONLY account/*.html WE OVERRIDE. EVERY OTHER allauth PAGE IS THEMED VIA THE
+LAYOUT AND ELEMENT OVERRIDES IN ../allauth/, WHICH KEEPS allauth'S OWN FEATURES
+(SOCIAL LOGIN, PASSKEYS, LOGIN-BY-CODE) INTACT.
+
+THIS ONE ADDS A DEVELOPMENT-ONLY AFFORDANCE: WITH ACCOUNT_EMAIL_VERIFICATION
+SET TO "mandatory" AND NO SMTP CONFIGURED LOCALLY, THE CONFIRMATION LINK ONLY
+EXISTS IN THE CONSOLE LOG. SHOWING IT ON THE PAGE LETS A DEVELOPER COMPLETE
+SIGNUP WITHOUT LEAVING THE BROWSER.
+
+STRICTLY GATED ON settings.DEBUG — IT MUST NEVER RENDER IN PRODUCTION, WHERE IT
+WOULD LET ANYONE VERIFY SOMEONE ELSE'S ADDRESS.
+{% endcomment %}
+
+{% block head_title %}{% trans "Verify your email" %} &middot; {{ block.super }}{% endblock %}
+
+{% block content %}
+    {% element h1 %}{% trans "Verify your email address" %}{% endelement %}
+
+    {% element p %}
+        {% blocktrans %}We've sent you a verification email. Follow the link inside it to finish signing up. If it isn't in your inbox, check your spam folder.{% endblocktrans %}
+    {% endelement %}
+
+    {# NOTE: NOT GATED ON THE `debug` CONTEXT VAR — DJANGO ONLY SETS THAT WHEN #}
+    {# THE CLIENT IP IS IN INTERNAL_IPS. THE CONTEXT PROCESSOR ONLY POPULATES  #}
+    {# df_dev_confirmation_url WHEN settings.DEBUG IS TRUE.                    #}
+    {% if df_dev_confirmation_url %}
+        <div class="mt-6 rounded border border-warning/30 bg-warning/10 p-4">
+            <p class="text-xs font-semibold uppercase tracking-wider text-warning">
+                {% trans "Development mode" %}
+            </p>
+            <p class="mt-1 text-sm text-muted">
+                {% trans "No SMTP server is configured, so the email was written to the console. Use this link to verify:" %}
+            </p>
+            <a href="{{ df_dev_confirmation_url }}"
+               class="mt-3 inline-block break-all rounded text-sm text-brand underline focus:outline-none focus-visible:ring-2 focus-visible:ring-brand">
+                {{ df_dev_confirmation_url }}
+            </a>
+        </div>
+    {% endif %}
+
+    <div class="mt-6">
+        {% url 'account_login' as login_url %}
+        {% element button href=login_url tags="secondary" %}{% trans "Back to sign in" %}{% endelement %}
+    </div>
+{% endblock content %}

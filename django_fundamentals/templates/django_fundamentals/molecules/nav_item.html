@@ -1,0 +1,22 @@
+{% load django_fundamentals %}{% comment %}
+NAV ITEM MOLECULE — A SINGLE SIDEBAR LINK WITH ACTIVE STATE.
+
+USAGE:
+    {% include "django_fundamentals/molecules/nav_item.html" with item=entry %}
+
+PARAMETERS:
+    item  -- dict with keys: label, url_name, icon (see DJANGO_FUNDAMENTALS_SIDEBAR_NAV)
+{% endcomment %}
+{% is_active item.url_name as active %}
+{% nav_url item.url_name as target %}
+{% if target %}
+<a href="{{ target }}"
+   {% if active %}aria-current="page"{% endif %}
+   class="group flex items-center gap-3 rounded px-3 py-2 text-sm transition-colors
+          {% if active %}bg-brand/10 font-medium text-brand{% else %}text-muted hover:bg-sunken hover:text-ink{% endif %}">
+    {% if item.icon %}
+        {% include "django_fundamentals/atoms/icon.html" with name=item.icon %}
+    {% endif %}
+    <span class="truncate">{{ item.label }}</span>
+</a>
+{% endif %}

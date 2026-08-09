@@ -1,0 +1,6 @@
+{% extends "django_fundamentals/layouts/app.html" %}
+{% comment %}
+OVERRIDES allauth's MANAGE LAYOUT (email addresses, change password, sessions,
+MFA) ONTO THE FULL APP SHELL — these pages are only reachable by a signed-in
+user, who has a sidebar worth showing.
+{% endcomment %}

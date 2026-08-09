@@ -8,6 +8,7 @@ the box:
 - Object-level permissions via [django-guardian](https://django-guardian.readthedocs.io/), plus a 4-tier authorization model: `Anonymous` / `Authenticated` / `Staff` / `Superuser`.
 - DRF `TokenAuthentication` for API clients.
 - A server-rendered frontend baseline: Django templates as the source of truth, [HTMX](https://htmx.org/) for server communication, [Alpine.js](https://alpinejs.dev/) for local UI state, and [Tailwind CSS](https://tailwindcss.com/) for styling.
+- A complete **UI skeleton** built from atomic-design components: app shell with sidebar and top navbar, a centered layout for auth pages, styled 404/403/400/500 pages, favicons, and dark mode. All colours and dimensions come from one design-token file. Every `django-allauth` page is themed. See `docs/source/ui.md`.
 
 New projects are generated from [django-fundamentals-cookiecutter](https://github.com/thespacedoctor/django-fundamentals-cookiecutter), which pins this package as a dependency. Updates to this package (`pip install -U django-fundamentals`) propagate into every project built on
 top of.

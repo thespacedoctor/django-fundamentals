@@ -1,0 +1,58 @@
+{% load static %}<!DOCTYPE html>
+<html lang="{% block html_lang %}en{% endblock %}" class="h-full">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {# CHILDREN PREPEND THEIR OWN TITLE, e.g. #}
+    {#   {% block head_title %}Log in &middot; {{ block.super }}{% endblock %} #}
+    <title>{% block head_title %}{{ df_site_name|default:"Django Fundamentals" }}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{% endblock %}">
+
+    {% block favicons %}
+    <link rel="icon" href="{% static 'django_fundamentals/favicon.svg' %}" type="image/svg+xml">
+    <link rel="alternate icon" href="{% static 'django_fundamentals/favicon.ico' %}" sizes="32x32">
+    <link rel="apple-touch-icon" href="{% static 'django_fundamentals/apple-touch-icon.png' %}">
+    <link rel="manifest" href="{% static 'django_fundamentals/site.webmanifest' %}">
+    {% endblock %}
+
+    {# THEME BOOT — MUST RUN SYNCHRONOUSLY BEFORE FIRST PAINT, OTHERWISE THE #}
+    {# PAGE FLASHES LIGHT BEFORE ALPINE LOADS AND APPLIES THE SAVED THEME.  #}
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem("theme");
+                var dark = stored
+                    ? stored === "dark"
+                    : window.matchMedia("(prefers-color-scheme: dark)").matches;
+                document.documentElement.classList.toggle("dark", dark);
+            } catch (e) { /* PRIVATE MODE / STORAGE DISABLED — FALL BACK TO LIGHT */ }
+        })();
+    </script>
+
+    {% block styles %}
+    {# COMPILED BY THE HOST PROJECT: `npm run build:css` — SEE django-fundamentals-cookiecutter #}
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
+    {% endblock %}
+
+    {% block scripts %}
+    <script src="https://unpkg.com/htmx.org@2.0.4" defer></script>
+    <script src="https://unpkg.com/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
+    {% endblock %}
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="min-h-full bg-surface font-sans text-ink antialiased"
+      hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+
+    {% block skip_link %}
+    <a href="#main-content"
+       class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-overlay focus:rounded focus:bg-brand focus:px-4 focus:py-2 focus:text-brand-fg">
+        Skip to main content
+    </a>
+    {% endblock %}
+
+    {% block body %}{% endblock %}
+
+    {% block extra_body %}{% endblock %}
+</body>
+</html>

@@ -1,35 +1,38 @@
-{% extends "django_fundamentals/base.html" %}
-{% block title %}Home{% endblock %}
-{% block content %}
-<h1 class="mb-2 text-2xl font-semibold">Welcome</h1>
-<p class="mb-6 text-sm text-gray-600">
-    This project is built on
-    <a href="https://github.com/thespacedoctor/django-fundamentals" class="text-blue-600 hover:underline">django-fundamentals</a>.
-    Here are the URLs it has already wired up:
-</p>
+{% extends "django_fundamentals/layouts/app.html" %}
 
-<div class="overflow-hidden rounded border border-gray-200">
+{% block head_title %}Home &middot; {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+    <h1 class="text-2xl font-semibold tracking-tight text-ink">Welcome</h1>
+    <p class="mt-2 max-w-content text-sm leading-relaxed text-muted">
+        This project is built on
+        <a href="https://github.com/thespacedoctor/django-fundamentals" class="rounded text-brand hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-brand">django-fundamentals</a>.
+        The routes below are wired up already — replace this page by adding your
+        own <code class="rounded bg-sunken px-1 py-0.5 font-mono text-xs">path("", ...)</code>
+        or by overriding
+        <code class="rounded bg-sunken px-1 py-0.5 font-mono text-xs">templates/django_fundamentals/home.html</code>.
+    </p>
+</div>
+
+<div class="overflow-hidden rounded-lg border border-line">
     <table class="w-full text-left text-sm">
-        <thead class="bg-gray-50">
+        <thead class="bg-sunken text-xs uppercase tracking-wider text-muted">
             <tr>
-                <th class="px-4 py-2 font-medium">URL</th>
-                <th class="px-4 py-2 font-medium">Description</th>
+                <th class="px-4 py-2.5 font-medium">URL</th>
+                <th class="px-4 py-2.5 font-medium">Description</th>
             </tr>
         </thead>
-        <tbody class="divide-y divide-gray-100">
+        <tbody class="divide-y divide-line">
             {% for url in homepage_urls %}
-            <tr>
-                <td class="whitespace-nowrap px-4 py-2 font-mono text-xs">{{ url.path }}</td>
-                <td class="px-4 py-2 text-gray-600">{{ url.description }}</td>
+            <tr class="hover:bg-raised">
+                <td class="whitespace-nowrap px-4 py-2.5">
+                    <a href="{{ url.path }}" class="rounded font-mono text-xs text-brand hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-brand">{{ url.path }}</a>
+                </td>
+                <td class="px-4 py-2.5 text-muted">{{ url.description }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
-
-<p class="mt-6 text-sm text-gray-500">
-    Override this page by adding your own
-    <code class="rounded bg-gray-100 px-1">templates/django_fundamentals/home.html</code>,
-    or replace it entirely with your own <code class="rounded bg-gray-100 px-1">path("", ...)</code>.
-</p>
 {% endblock %}

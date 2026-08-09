@@ -1,0 +1,28 @@
+{% comment %}
+ALERT ATOM — INLINE FEEDBACK BANNER.
+
+USAGE:
+    {% include "django_fundamentals/atoms/alert.html" with level="success" body="Saved." %}
+    {% include "django_fundamentals/atoms/alert.html" with level="error" body=form.errors %}
+
+PARAMETERS:
+    body   -- the message text (required)
+    level  -- info (default) | success | warning | error
+{% endcomment %}
+{% if level == "success" %}
+    {% with tone="border-success/30 bg-success/10 text-success" %}
+        <div class="mb-4 rounded border px-4 py-3 text-sm {{ tone }}" role="status">{{ body }}</div>
+    {% endwith %}
+{% elif level == "warning" %}
+    {% with tone="border-warning/30 bg-warning/10 text-warning" %}
+        <div class="mb-4 rounded border px-4 py-3 text-sm {{ tone }}" role="status">{{ body }}</div>
+    {% endwith %}
+{% elif level == "error" %}
+    {% with tone="border-danger/30 bg-danger/10 text-danger" %}
+        <div class="mb-4 rounded border px-4 py-3 text-sm {{ tone }}" role="alert">{{ body }}</div>
+    {% endwith %}
+{% else %}
+    {% with tone="border-line bg-raised text-ink" %}
+        <div class="mb-4 rounded border px-4 py-3 text-sm {{ tone }}" role="status">{{ body }}</div>
+    {% endwith %}
+{% endif %}

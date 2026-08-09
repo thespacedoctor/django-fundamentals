@@ -1,0 +1,13 @@
+{% extends "django_fundamentals/layouts/auth.html" %}
+{% comment %}
+OVERRIDES allauth's ENTRANCE LAYOUT (login, signup, password reset, email
+confirmation — anything a signed-out visitor reaches) ONTO THE CENTERED AUTH
+CARD.
+
+Overriding allauth's three layouts (base/entrance/manage) plus the element
+templates in ../elements/ themes *every* allauth page at once, including the
+MFA, socialaccount and usersessions flows we never name explicitly.
+
+NOTE: {% templatetag openblock %} extends {% templatetag closeblock %} MUST be
+the first tag in the file, so this note sits below it.
+{% endcomment %}

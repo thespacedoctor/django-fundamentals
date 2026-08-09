@@ -76,8 +76,28 @@ python manage.py migrate
 
 ## Tailwind CSS
 
-`django_fundamentals/templates/django_fundamentals/base.html` links a
-project-supplied, compiled stylesheet at `static/css/tailwind.css`. Building
-that file is the host project's responsibility — see
-[django-fundamentals-cookiecutter](https://github.com/thespacedoctor/django-fundamentals-cookiecutter),
-which ships a working `tailwind.config.js` / `package.json` build pipeline.
+The base layout links a project-supplied, compiled stylesheet at
+`static/css/tailwind.css`. Building it is the host project's responsibility —
+see [django-fundamentals-cookiecutter](https://github.com/thespacedoctor/django-fundamentals-cookiecutter),
+which ships a working `tailwind.config.js` / `package.json` pipeline.
+
+Your `tailwind.config.js` **must scan this package's templates as well as your
+own**, or every class used by the sidebar, navbar and auth pages is purged and
+the app renders unstyled. Don't hard-code a path like `./.venv/lib/**` — under
+conda, site-packages lives outside the project entirely. Ask Python where the
+package actually is:
+
+```js
+const { execSync } = require("child_process");
+const packageDir = execSync(
+    'python -c "import django_fundamentals,os;print(os.path.dirname(django_fundamentals.__file__))"',
+    { encoding: "utf8" }
+).trim();
+
+module.exports = {
+    presets: [require(path.join(packageDir, "static/django_fundamentals/tailwind-preset.js"))],
+    content: ["./templates/**/*.html", path.join(packageDir, "templates/**/*.html")],
+};
+```
+
+See [UI skeleton](ui.md) for the design tokens this drives.
