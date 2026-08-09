@@ -7,9 +7,16 @@ from django.conf import settings
 # GROUP HEADING RATHER THAN A LINK.
 DEFAULT_SIDEBAR_NAV = [
     {"label": "Home", "url_name": "django_fundamentals_home", "icon": "home"},
-    {"section": "Account"},
+]
+
+# THE SETTINGS PAGE TAB RAIL. SUPPLIED TO EVERY TEMPLATE RATHER THAN BUILT IN A
+# VIEW BECAUSE TWO OF THESE TABS RENDER ON allauth's OWN PAGES, WHICH USE
+# allauth's VIEWS — THERE IS NO get_context_data OF OURS TO HOOK.
+SETTINGS_TABS = [
+    {"label": "Profile", "url_name": "django_fundamentals_settings", "icon": "user"},
     {"label": "Email addresses", "url_name": "account_email", "icon": "mail"},
     {"label": "Change password", "url_name": "account_change_password", "icon": "key"},
+    {"label": "API", "url_name": "django_fundamentals_settings_api", "icon": "terminal"},
 ]
 
 
@@ -42,6 +49,7 @@ def design(request):
         "df_sidebar_nav": getattr(
             settings, "DJANGO_FUNDAMENTALS_SIDEBAR_NAV", DEFAULT_SIDEBAR_NAV
         ),
+        "df_settings_tabs": SETTINGS_TABS,
         "df_version": __version__,
     }
 

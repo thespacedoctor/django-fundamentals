@@ -54,6 +54,7 @@ The mapping lives in the package so it reaches your project through
 | `django_fundamentals/layouts/base.html` | `<html>` skeleton, `<head>`, theme boot, favicons. Rarely extended directly. |
 | `django_fundamentals/layouts/app.html` | App shell — sidebar + navbar + content + footer. |
 | `django_fundamentals/layouts/auth.html` | Centered single-column card, no sidebar. |
+| `django_fundamentals/layouts/settings.html` | The app shell plus the settings tab rail. |
 
 ```django
 {% extends "django_fundamentals/layouts/app.html" %}
@@ -61,19 +62,49 @@ The mapping lives in the package so it reaches your project through
 {% block content %}...{% endblock %}
 ```
 
-Available blocks: `head_title`, `content`, `navbar`, `sidebar`, `footer`,
-`page_header`, `extra_head`, `extra_body`, `styles`, `scripts`, `favicons`.
+Available blocks: `head_title`, `content`, `content_outer`, `navbar`, `sidebar`,
+`footer`, `page_header`, `extra_head`, `extra_body`, `styles`, `scripts`,
+`favicons`.
 
 Set `page_title` (and optionally `page_subtitle`) in a view's context to get a
 standard page header for free.
+
+### Wrapping pages you don't own: `content_outer`
+
+`app.html` nests the content block inside a second one:
+
+```django
+{% block content_outer %}{% block content %}{% endblock %}{% endblock %}
+```
+
+A sub-layout overrides `content_outer` to add chrome around *any* page that
+extends it, including pages whose templates you don't control. Child templates
+keep overriding `content` as normal and land inside the wrapper. This is how the
+settings tab rail appears on allauth's email and password pages without
+overriding either of them:
+
+```django
+{% extends "django_fundamentals/layouts/app.html" %}
+
+{% block content_outer %}
+<div class="flex gap-10">
+    {% include "django_fundamentals/organisms/settings_tabs.html" %}
+    <div class="min-w-0 flex-1">{{ block.super }}</div>
+</div>
+{% endblock %}
+```
+
+`{{ block.super }}` must sit directly inside the `content_outer` override. Wrap
+it in a further `{% block %}` and `block.super` resolves against *that* name,
+which the parent never defines — the page body then renders as nothing.
 
 ## Components
 
 - **atoms/** — `button.html`, `alert.html`, `icon.html`
 - **molecules/** — `form_field.html`, `nav_item.html`, `theme_toggle.html`,
-  `user_menu.html`, `brand_mark.html`
+  `user_menu.html`, `brand_mark.html`, `avatar.html`
 - **organisms/** — `navbar.html`, `sidebar.html`, `footer.html`,
-  `messages.html`, `page_header.html`
+  `messages.html`, `page_header.html`, `settings_tabs.html`
 
 Components are parameterised `{% include %}`s:
 
@@ -85,8 +116,17 @@ Components are parameterised `{% include %}`s:
 
 `button` variants: `primary` (default), `secondary`, `ghost`, `danger`.
 `icon` names: `home`, `menu`, `close`, `sun`, `moon`, `user`, `shield`, `key`,
-`mail`, `chevron-down`, `external`, `check`, `alert`. Icons are inline SVG using
+`mail`, `chevron-down`, `external`, `check`, `alert`, `settings`, `terminal`,
+`eye`, `eye-off`, `copy`, `refresh`, `camera`. Icons are inline SVG using
 `currentColor`, so they inherit colour and theme automatically.
+
+`avatar` renders a user's profile picture, falling back to their initials — the
+default for every new account, so it is the path most users see:
+
+```django
+{% include "django_fundamentals/molecules/avatar.html" with user=request.user %}
+{% include "django_fundamentals/molecules/avatar.html" with user=someUser size="h-20 w-20" text="text-2xl" %}
+```
 
 ## Sidebar navigation
 
@@ -105,6 +145,30 @@ DJANGO_FUNDAMENTALS_SIDEBAR_NAV = [
 An entry whose `url_name` cannot be reversed is skipped rather than raising, so
 it is safe to list routes that don't exist yet. The active link is detected from
 `request.resolver_match.url_name`.
+
+Account tools are deliberately absent from the default nav — they live on the
+settings page, reached from the navbar avatar.
+
+## User settings page
+
+`/settings/` gives a signed-in user one place for everything personal, with a
+tab rail down the left:
+
+| Tab | Owned by |
+|---|---|
+| Profile | this package — avatar, username, first/last name |
+| Email addresses | allauth (`account_email`) |
+| Change password | allauth (`account_change_password`) |
+| API | this package — view, copy and regenerate the DRF token |
+
+The tabs come from `SETTINGS_TABS` in `context_processors.py` and are supplied to
+every template, because two of them render on allauth's own pages where there is
+no view of ours to add context in.
+
+Profile pictures are stored on disk (`MEDIA_ROOT`, falling back to
+`BASE_DIR/media`) and served by `AvatarView` rather than by the web server, so a
+project needs no `MEDIA_URL` and no Apache `Alias` for uploads to work. Users
+without a picture get their initials via `molecules/avatar.html`.
 
 ## Dark mode
 

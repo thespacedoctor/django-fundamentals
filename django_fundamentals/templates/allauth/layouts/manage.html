@@ -1,6 +1,11 @@
-{% extends "django_fundamentals/layouts/app.html" %}
+{% extends "django_fundamentals/layouts/settings.html" %}
 {% comment %}
 OVERRIDES allauth's MANAGE LAYOUT (email addresses, change password, sessions,
-MFA) ONTO THE FULL APP SHELL — these pages are only reachable by a signed-in
-user, who has a sidebar worth showing.
+MFA) ONTO THE SETTINGS SHELL — these pages are only reachable by a signed-in
+user, and they ARE settings pages, so they get the same tab rail as this
+package's own Profile and API tabs.
+
+Extending layouts/settings.html (rather than layouts/app.html) is what puts the
+rail on all ~30 allauth pages without overriding a single one of them. Adding a
+per-page allauth override to achieve the same thing would be a regression.
 {% endcomment %}

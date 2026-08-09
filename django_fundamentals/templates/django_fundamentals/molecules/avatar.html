@@ -1,0 +1,24 @@
+{% comment %}
+AVATAR MOLECULE — PROFILE PICTURE, OR THE USER'S INITIALS WHEN THERE ISN'T ONE.
+
+Rounded-square rather than circular, matching the navbar treatment. The initials
+path is the default for every new account, so it has to look deliberate rather
+than like a missing image.
+
+USAGE:
+    {% include "django_fundamentals/molecules/avatar.html" with user=request.user %}
+    {% include "django_fundamentals/molecules/avatar.html" with user=request.user size="h-20 w-20" text="text-2xl" %}
+
+PARAMETERS:
+    user  -- a User instance
+    size  -- tailwind height/width classes (default "h-8 w-8")
+    text  -- tailwind font-size class for the initials (default "text-xs")
+{% endcomment %}
+{% if user.avatar %}
+    <img src="{% url 'django_fundamentals_avatar' user.pk %}"
+         alt="{{ user.display_name }}"
+         class="{{ size|default:'h-8 w-8' }} shrink-0 rounded object-cover">
+{% else %}
+    <span class="{{ size|default:'h-8 w-8' }} {{ text|default:'text-xs' }} flex shrink-0 items-center justify-center rounded bg-brand/15 font-semibold uppercase text-brand"
+          aria-hidden="true">{{ user.get_initials }}</span>
+{% endif %}

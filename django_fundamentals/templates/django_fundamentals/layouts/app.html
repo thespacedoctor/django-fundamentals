@@ -34,7 +34,12 @@
                 {% endif %}
             {% endblock %}
 
-            {% block content %}{% endblock %}
+            {# content_outer WRAPS content SO A SUB-LAYOUT CAN ADD CHROME     #}
+            {# AROUND A PAGE WITHOUT THAT PAGE COOPERATING — CHILD TEMPLATES  #}
+            {# OVERRIDE content AS USUAL AND LAND INSIDE THE WRAPPER. THIS IS #}
+            {# WHAT LETS layouts/settings.html PUT THE TAB RAIL ON allauth'S  #}
+            {# OWN PAGES WITHOUT OVERRIDING ANY OF THEM.                      #}
+            {% block content_outer %}{% block content %}{% endblock %}{% endblock %}
         </main>
 
         {% block footer %}

@@ -18,11 +18,46 @@ from dj_rest_auth.registration.views import (
     VerifyEmailView,
 )
 from django.urls import include, path
+from django.views.generic import RedirectView
 
-from django_fundamentals.views import HomeView
+from django_fundamentals.views import (
+    ApiTokenRegenerateView,
+    AvatarView,
+    HomeView,
+    SettingsApiView,
+    SettingsProfileView,
+)
 
 urlpatterns = [
     path("", HomeView.as_view(), name="django_fundamentals_home"),
+    # USER SETTINGS. THE AVATAR ROUTE SHARES allauth's accounts/ PREFIX AND IS
+    # DECLARED ABOVE include("allauth.urls") SO IT KEEPS WINNING IF allauth EVER
+    # ADDS A PATTERN THAT WOULD SWALLOW IT.
+    path(
+        "settings/",
+        RedirectView.as_view(pattern_name="django_fundamentals_settings", permanent=False),
+        name="django_fundamentals_settings_index",
+    ),
+    path(
+        "settings/profile/",
+        SettingsProfileView.as_view(),
+        name="django_fundamentals_settings",
+    ),
+    path(
+        "settings/api/",
+        SettingsApiView.as_view(),
+        name="django_fundamentals_settings_api",
+    ),
+    path(
+        "settings/api/token/regenerate/",
+        ApiTokenRegenerateView.as_view(),
+        name="django_fundamentals_token_regenerate",
+    ),
+    path(
+        "accounts/avatar/<int:pk>/",
+        AvatarView.as_view(),
+        name="django_fundamentals_avatar",
+    ),
     path("accounts/", include("allauth.urls")),
     path("api/auth/", include("dj_rest_auth.urls")),
     # WIRED UP EXPLICITLY RATHER THAN VIA include("dj_rest_auth.registration.urls"):
