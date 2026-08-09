@@ -1,8 +1,9 @@
 {% comment %}
 FORM FIELD MOLECULE — LABEL + WIDGET + HELP TEXT + ERRORS.
 
-Django renders the widget itself, so this molecule styles it via the `class`
-attribute injected in organisms/form.html rather than re-implementing inputs.
+Django renders the widget itself; the element-level base styles registered in
+the Tailwind preset take care of its appearance, so this molecule only handles
+layout, labelling and errors.
 
 USAGE:
     {% include "django_fundamentals/molecules/form_field.html" with field=form.email %}
@@ -11,17 +12,33 @@ PARAMETERS:
     field  -- a bound Django form field (required)
 {% endcomment %}
 <div class="space-y-1.5">
-    {% if field.label %}
-        <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-ink">
-            {{ field.label }}
-            {% if field.field.required %}
-                <span class="text-danger" aria-hidden="true">*</span>
-                <span class="sr-only">(required)</span>
+    {% if field.field.widget.input_type == "checkbox" %}
+        {# CHECKBOXES READ AS "[x] Label", NOT A LABEL STACKED ABOVE A LONE BOX. #}
+        <div class="flex items-center gap-2">
+            {{ field }}
+            {% if field.label %}
+                <label for="{{ field.id_for_label }}" class="text-sm text-ink">
+                    {{ field.label }}
+                    {% if field.field.required %}
+                        <span class="text-danger" aria-hidden="true">*</span>
+                        <span class="sr-only">(required)</span>
+                    {% endif %}
+                </label>
             {% endif %}
-        </label>
-    {% endif %}
+        </div>
+    {% else %}
+        {% if field.label %}
+            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-ink">
+                {{ field.label }}
+                {% if field.field.required %}
+                    <span class="text-danger" aria-hidden="true">*</span>
+                    <span class="sr-only">(required)</span>
+                {% endif %}
+            </label>
+        {% endif %}
 
-    {{ field }}
+        {{ field }}
+    {% endif %}
 
     {% if field.help_text %}
         <p class="text-xs text-muted">{{ field.help_text|safe }}</p>

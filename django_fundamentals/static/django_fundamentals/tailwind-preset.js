@@ -73,10 +73,19 @@ const formControls = ({ addBase, theme }) => {
       "textarea",
     ].join(", ")]: control,
 
+    // NATIVE CHECKBOXES/RADIOS IGNORE `color`; accent-color IS THE PROPERTY
+    // BROWSERS ACTUALLY HONOUR, AND AVOIDS HAVING TO REBUILD THE CONTROL WITH
+    // appearance:none (WHICH WOULD ALSO LOSE THE INDETERMINATE STATE).
     'input[type="checkbox"], input[type="radio"]': {
+      width: "1rem",
+      height: "1rem",
+      accentColor: "rgb(var(--color-brand))",
       borderColor: "rgb(var(--color-line))",
-      color: "rgb(var(--color-brand))",
-      "&:focus": { boxShadow: "0 0 0 2px rgb(var(--color-brand) / 0.25)" },
+      cursor: "pointer",
+      "&:focus-visible": {
+        outline: "2px solid rgb(var(--color-brand))",
+        outlineOffset: "2px",
+      },
     },
 
     // DJANGO AND allauth BOTH RENDER FORM ERRORS AS <ul class="errorlist">.
