@@ -1,5 +1,42 @@
 # Changes
 
+**v0.3.0 - August 9, 2026**
+
+- **FEATURE:** users now choose a username at signup and can log in with
+  **either** their username or their email address.
+- **FEATURE:** a user settings page at `/settings/`, with tabs down the left for
+  Profile, Email addresses, Change password and API. The email and password tabs
+  link to allauth's own pages, which inherit the tab rail through
+  `allauth/layouts/manage.html` — no per-page allauth override was added.
+- **FEATURE:** profile pictures. `User.avatar` is an `ImageField` served by
+  `django_fundamentals.views.AvatarView`, so uploads work with no `MEDIA_URL`
+  setting and no web-server `Alias` — existing projects need no configuration
+  change. Users without a picture are shown their initials everywhere an avatar
+  appears.
+- **FEATURE:** an API tab showing the user's DRF token, blurred by default, with
+  reveal, copy-to-clipboard and a confirmed regenerate action.
+- **ENHANCEMENT:** the navbar dropdown is now a rounded-square avatar linking to
+  the settings page, replacing its separate email and password entries.
+- **ENHANCEMENT:** new `content_outer` block in `layouts/app.html` lets a
+  sub-layout wrap chrome around a page without that page cooperating. This is
+  what puts the settings tabs on allauth's pages.
+- **ENHANCEMENT:** new `molecules/avatar.html` component and `settings`,
+  `terminal`, `eye`, `eye-off`, `copy`, `refresh` and `camera` icons.
+- **REFACTOR:** `DEFAULT_SIDEBAR_NAV` no longer carries an ACCOUNT section —
+  those tools live on the settings page now.
+
+**Upgrading from v0.2.x — three things to know:**
+
+1. **Signup now requires a username.** Existing users are unaffected: allauth had
+   already auto-derived a username for each of them, so username login works
+   immediately.
+2. **Your sidebar will still show its ACCOUNT section.** Projects define their
+   own `DJANGO_FUNDAMENTALS_SIDEBAR_NAV` in `settings.py`, which overrides the
+   package default, so this is a manual edit — delete the `{"section": "Account"}`
+   entry and the two entries below it.
+3. **Run `python manage.py migrate`** to pick up `0002_user_avatar`, and add
+   `media/` to your `.gitignore`. Pillow is now a hard dependency.
+
 **v0.2.0 - August 9, 2026**
 
 - **FEATURE:** full UI skeleton built from atomic-design components — app shell

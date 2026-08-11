@@ -30,6 +30,9 @@ dependencies = [
     # dj_rest_auth.registration UNCONDITIONALLY IMPORTS allauth's oauth2 client,
     # WHICH REQUIRES `requests` EVEN WITHOUT ANY SOCIAL PROVIDER CONFIGURED
     "requests>=2.31",
+    # REQUIRED BY User.avatar (ImageField) — DJANGO REFUSES TO VALIDATE THE
+    # MODEL WITHOUT IT
+    "pillow>=10",
 ]
 
 [project.urls]

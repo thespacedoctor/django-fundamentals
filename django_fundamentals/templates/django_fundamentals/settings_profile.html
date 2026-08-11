@@ -1,0 +1,67 @@
+{% extends "django_fundamentals/layouts/settings.html" %}
+{% comment %}
+PROFILE TAB — PROFILE PICTURE, USERNAME AND REAL NAME.
+
+Email is not editable here on purpose: allauth owns email addresses (multiple
+addresses, primary selection, re-verification) on its own tab.
+{% endcomment %}
+
+{% block head_title %}Profile &middot; {{ block.super }}{% endblock %}
+
+{% block content %}
+<h1 class="text-xl font-semibold tracking-tight text-ink">Profile</h1>
+<p class="mt-1 text-sm text-muted">How you appear across {{ df_site_name }}.</p>
+
+<form method="post" enctype="multipart/form-data" class="mt-6 space-y-6">
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+        {% include "django_fundamentals/atoms/alert.html" with level="error" body=form.non_field_errors %}
+    {% endif %}
+
+    <section class="rounded-lg border border-line bg-raised p-5">
+        <h2 class="text-base font-semibold tracking-tight text-ink">Profile picture</h2>
+
+        <div class="mt-4 flex items-center gap-5">
+            {% include "django_fundamentals/molecules/avatar.html" with user=request.user size="h-20 w-20" text="text-2xl" %}
+
+            {# THE NATIVE FILE INPUT IS sr-only (SEE ProfileForm.Meta.widgets); #}
+            {# THIS LABEL IS THE VISIBLE TRIGGER AND ALPINE ECHOES THE CHOSEN  #}
+            {# FILENAME, WHICH THE HIDDEN INPUT CAN NO LONGER SHOW.            #}
+            <div class="min-w-0 flex-1 space-y-1.5" x-data="{ fileName: '' }">
+                <label for="{{ form.avatar.id_for_label }}"
+                       class="flex w-fit cursor-pointer items-center gap-2 rounded border border-line bg-surface px-3 py-2 text-sm text-ink transition-colors hover:bg-sunken focus-within:ring-2 focus-within:ring-brand">
+                    {% include "django_fundamentals/atoms/icon.html" with name="camera" class="h-4 w-4" %}
+                    <span>Choose an image</span>
+                </label>
+                <div @change="fileName = $event.target.files.length ? $event.target.files[0].name : ''">
+                    {{ form.avatar }}
+                </div>
+                <p x-show="fileName" x-cloak class="truncate text-xs text-ink" x-text="fileName"></p>
+                {% if form.avatar.help_text %}
+                    <p class="text-xs text-muted">{{ form.avatar.help_text }}</p>
+                {% endif %}
+                {% if form.avatar.errors %}
+                    <ul class="errorlist" role="alert">
+                        {% for error in form.avatar.errors %}<li>{{ error }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <section class="rounded-lg border border-line bg-raised p-5">
+        <h2 class="text-base font-semibold tracking-tight text-ink">Details</h2>
+
+        <div class="mt-4 space-y-4">
+            {% include "django_fundamentals/molecules/form_field.html" with field=form.username %}
+            {% include "django_fundamentals/molecules/form_field.html" with field=form.first_name %}
+            {% include "django_fundamentals/molecules/form_field.html" with field=form.last_name %}
+        </div>
+    </section>
+
+    <div class="flex gap-2">
+        {% include "django_fundamentals/atoms/button.html" with label="Save changes" %}
+    </div>
+</form>
+{% endblock %}

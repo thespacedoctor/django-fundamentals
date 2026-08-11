@@ -1,5 +1,8 @@
 """*minimal Django settings used only to run this package's own test suite*"""
 
+import tempfile
+from pathlib import Path
+
 from django_fundamentals.settings import (
     ACCOUNT_ADAPTER,
     ACCOUNT_EMAIL_VERIFICATION,
@@ -18,6 +21,10 @@ from django_fundamentals.settings import (
 )
 
 SECRET_KEY = "test-secret-key-not-for-production"
+
+# AVATAR UPLOADS GO TO A TEMP DIR SO THE SUITE NEVER WRITES INTO THE REPO.
+# django_fundamentals.storage.AvatarStorage READS THIS AT CALL TIME.
+MEDIA_ROOT = Path(tempfile.gettempdir()) / "django-fundamentals-test-media"
 DEBUG = True
 ALLOWED_HOSTS = ["*"]
 

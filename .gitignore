@@ -11,3 +11,4 @@ build/
 *.sqlite3
 django_fundamentals/__version__.py
 *.code-workspace
+/.claude

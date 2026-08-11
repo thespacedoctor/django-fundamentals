@@ -41,6 +41,50 @@ so a freshly generated project doesn't 404 at `/`. Two ways to override it:
   `include("django_fundamentals.urls")` in your project's `urls.py`; Django's
   resolver matches the first pattern, so your view wins entirely.
 
+## Accounts, usernames and the API token
+
+Users sign up with **both** a username and an email address, and log in with
+either one — `ACCOUNT_LOGIN_METHODS = {"email", "username"}` and
+`ACCOUNT_SIGNUP_FIELDS` in `django_fundamentals/settings.py` drive this, so both
+the server-rendered forms and the dj-rest-auth endpoints follow automatically.
+
+Signed-in users manage themselves at `/settings/`:
+
+| URL name | Page |
+|---|---|
+| `django_fundamentals_settings` | Profile — avatar, username, first/last name |
+| `django_fundamentals_settings_api` | API — view, copy, regenerate the token |
+| `django_fundamentals_token_regenerate` | POST-only; replaces the token |
+| `django_fundamentals_avatar` | Streams a user's profile picture |
+
+Email addresses and passwords stay with allauth's own pages, which appear as
+tabs on the same rail.
+
+### Regenerating an API token
+
+DRF's `authtoken` is strictly one token per user, so regenerating **destroys**
+the old key — anything still using it starts getting 401s immediately. The UI
+confirms before posting. Programmatically it is just:
+
+```python
+from rest_framework.authtoken.models import Token
+
+Token.objects.filter(user=targetUser).delete()
+newToken = Token.objects.create(user=targetUser)
+```
+
+### Profile pictures
+
+`User.avatar` is an `ImageField` written under `MEDIA_ROOT` (falling back to
+`BASE_DIR/media`, then the working directory) and served by
+`django_fundamentals.views.AvatarView`. Serving through a view rather than the
+web server means projects generated before avatars existed need no settings or
+Apache changes — but it also means avatar requests hit Python, so responses
+carry a one-day `private` cache header.
+
+`User.get_initials()` supplies the fallback shown when a user has no picture,
+and `User.display_name` gives their full name or username.
+
 ## Overriding templates
 
 The UI skeleton's layouts and components live under

@@ -1,0 +1,30 @@
+{% load django_fundamentals %}{% comment %}
+SETTINGS TAB RAIL ORGANISM — VERTICAL NAV DOWN THE LEFT OF EVERY SETTINGS PAGE.
+
+Two of these tabs (email addresses, change password) are allauth's own pages.
+They are linked rather than re-implemented, so allauth keeps owning that logic
+and this package keeps theming allauth through its layouts alone.
+
+Entries mirror the DJANGO_FUNDAMENTALS_SIDEBAR_NAV shape, so nav_item.html's
+conventions carry over. nav_url returns "" for a name that doesn't reverse,
+which drops the tab rather than 500ing the page.
+{% endcomment %}
+<nav class="lg:w-56 lg:shrink-0" aria-label="Settings sections">
+    <ul class="flex gap-1 overflow-x-auto border-b border-line pb-2 lg:flex-col lg:overflow-visible lg:border-b-0 lg:pb-0">
+        {% for tab in df_settings_tabs %}
+            {% nav_url tab.url_name as target %}
+            {% if target %}
+                {% is_active tab.url_name as active %}
+                <li>
+                    <a href="{{ target }}"
+                       {% if active %}aria-current="page"{% endif %}
+                       class="flex items-center gap-2.5 whitespace-nowrap rounded px-3 py-2 text-sm transition-colors
+                              {% if active %}bg-brand/10 font-medium text-brand{% else %}text-muted hover:bg-sunken hover:text-ink{% endif %}">
+                        {% include "django_fundamentals/atoms/icon.html" with name=tab.icon class="h-4 w-4" %}
+                        <span>{{ tab.label }}</span>
+                    </a>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</nav>

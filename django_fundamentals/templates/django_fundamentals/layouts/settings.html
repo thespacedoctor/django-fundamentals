@@ -1,0 +1,23 @@
+{% extends "django_fundamentals/layouts/app.html" %}
+{% comment %}
+SETTINGS LAYOUT — THE APP SHELL PLUS A TAB RAIL DOWN THE LEFT.
+
+Overrides content_outer rather than content, so a child template overriding
+content (this package's own settings pages AND every allauth manage page) drops
+into the column beside the rail without knowing the rail exists. {{ block.super }}
+renders app.html's content_outer, which renders whatever the child put in content.
+{% endcomment %}
+
+{% block content_outer %}
+<div class="flex flex-col gap-6 lg:flex-row lg:gap-10">
+    {% include "django_fundamentals/organisms/settings_tabs.html" %}
+
+    {# block.super RENDERS app.html'S content_outer, WHICH RENDERS THE content #}
+    {# BLOCK — RESOLVED TO WHATEVER THE CHILD PAGE PUT THERE. DO NOT WRAP THIS #}
+    {# IN A FURTHER {% block %}: block.super WOULD THEN RESOLVE AGAINST *THAT* #}
+    {# NAME, WHICH THE PARENT NEVER DEFINES, AND SILENTLY RENDER NOTHING.      #}
+    <div class="min-w-0 flex-1">
+        {{ block.super }}
+    </div>
+</div>
+{% endblock %}

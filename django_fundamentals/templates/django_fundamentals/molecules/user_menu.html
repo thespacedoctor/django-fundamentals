@@ -7,25 +7,19 @@ USER MENU MOLECULE — AVATAR DROPDOWN, OR LOG IN / SIGN UP WHEN ANONYMOUS.
         <button type="button" @click="open = !open"
                 class="flex items-center gap-2 rounded px-2 py-1.5 text-sm text-ink transition-colors hover:bg-sunken focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
                 :aria-expanded="open ? 'true' : 'false'" aria-haspopup="menu">
-            <span class="flex h-7 w-7 items-center justify-center rounded-full bg-brand/15 text-xs font-semibold uppercase text-brand">
-                {{ request.user.email|default:request.user.get_username|slice:":1" }}
-            </span>
-            <span class="hidden max-w-[12rem] truncate sm:inline">{{ request.user.email|default:request.user.get_username }}</span>
+            {% include "django_fundamentals/molecules/avatar.html" with user=request.user size="h-7 w-7" %}
+            <span class="hidden max-w-[12rem] truncate sm:inline">{{ request.user.display_name }}</span>
             {% include "django_fundamentals/atoms/icon.html" with name="chevron-down" class="h-4 w-4" %}
         </button>
 
         <div x-show="open" x-transition x-cloak role="menu"
              class="absolute right-0 z-overlay mt-2 w-56 overflow-hidden rounded-lg border border-line bg-raised py-1 shadow-lg">
-            {% nav_url "account_email" as emailUrl %}
-            {% if emailUrl %}
-                <a href="{{ emailUrl }}" role="menuitem" class="flex items-center gap-2.5 px-3 py-2 text-sm text-muted hover:bg-sunken hover:text-ink">
-                    {% include "django_fundamentals/atoms/icon.html" with name="mail" class="h-4 w-4" %}Email addresses
-                </a>
-            {% endif %}
-            {% nav_url "account_change_password" as passwordUrl %}
-            {% if passwordUrl %}
-                <a href="{{ passwordUrl }}" role="menuitem" class="flex items-center gap-2.5 px-3 py-2 text-sm text-muted hover:bg-sunken hover:text-ink">
-                    {% include "django_fundamentals/atoms/icon.html" with name="key" class="h-4 w-4" %}Change password
+            {# ONE ENTRY POINT — EMAIL ADDRESSES AND PASSWORD ARE NOW TABS #}
+            {# INSIDE THE SETTINGS PAGE RATHER THAN SEPARATE MENU ITEMS.  #}
+            {% nav_url "django_fundamentals_settings" as settingsUrl %}
+            {% if settingsUrl %}
+                <a href="{{ settingsUrl }}" role="menuitem" class="flex items-center gap-2.5 px-3 py-2 text-sm text-muted hover:bg-sunken hover:text-ink">
+                    {% include "django_fundamentals/atoms/icon.html" with name="settings" class="h-4 w-4" %}Settings
                 </a>
             {% endif %}
             {% if request.user.is_staff %}
