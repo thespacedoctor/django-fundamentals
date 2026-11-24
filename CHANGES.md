@@ -1,5 +1,9 @@
 # Changes
 
+**Unreleased**
+
+- **ENHANCEMENT:** CI skips the test and check workflows when a change touches only `CHANGES.md`.
+
 **v0.3.0 - August 9, 2026**
 
 - **FEATURE:** users now choose a username at signup and can log in with
